@@ -5,6 +5,7 @@ namespace App\Http\Requests\Settings;
 use App\Concerns\ProfileValidationRules;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Str;
 
 class ProfileUpdateRequest extends FormRequest
 {
@@ -18,5 +19,18 @@ class ProfileUpdateRequest extends FormRequest
     public function rules(): array
     {
         return $this->profileRules($this->user()->id);
+    }
+
+    protected function prepareForValidation(): void
+    {
+        if ($this->has('slug')) {
+            $this->merge([
+                'slug' => Str::of((string) $this->input('slug'))
+                    ->ascii()
+                    ->lower()
+                    ->replaceMatches('/[^a-z]/', '')
+                    ->toString(),
+            ]);
+        }
     }
 }

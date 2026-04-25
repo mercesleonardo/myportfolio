@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Middleware\{HandleAppearance, HandleInertiaRequests};
+use App\Http\Middleware\{HandleAppearance, HandleInertiaRequests, SetLocaleFromRequest};
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\{Exceptions, Middleware};
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
@@ -15,6 +15,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->encryptCookies(except: ['appearance', 'sidebar_state']);
 
         $middleware->web(append: [
+            SetLocaleFromRequest::class,
             HandleAppearance::class,
             HandleInertiaRequests::class,
             AddLinkHeadersForPreloadedAssets::class,

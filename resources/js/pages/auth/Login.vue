@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { Form, Head } from '@inertiajs/vue3';
 import InputError from '@/components/InputError.vue';
+import GoogleAuthButton from '@/components/auth/GoogleAuthButton.vue';
 import PasswordInput from '@/components/PasswordInput.vue';
 import TextLink from '@/components/TextLink.vue';
 import { Button } from '@/components/ui/button';
@@ -98,6 +99,8 @@ defineProps<{
                 <Spinner v-if="processing" />
                 Log in
             </Button>
+
+            <GoogleAuthButton :tabindex="5" data-test="login-google-button" />
         </div>
 
         <div
@@ -105,7 +108,7 @@ defineProps<{
             v-if="canRegister"
         >
             Don't have an account?
-            <TextLink :href="register()" :tabindex="5">Sign up</TextLink>
+            <TextLink :href="register()" :tabindex="6">Sign up</TextLink>
         </div>
     </Form>
 </template>

@@ -5,8 +5,8 @@ namespace App\Actions\Fortify;
 use App\Concerns\{PasswordValidationRules, ProfileValidationRules};
 use App\Enums\UserRole;
 use App\Models\User;
+use App\Support\UsernameSlug;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 
 class CreateNewUser implements CreatesNewUsers
@@ -21,11 +21,7 @@ class CreateNewUser implements CreatesNewUsers
      */
     public function create(array $input): User
     {
-        $input['slug'] = Str::of((string) ($input['slug'] ?? ''))
-            ->ascii()
-            ->lower()
-            ->replaceMatches('/[^a-z]/', '')
-            ->toString();
+        $input['slug'] = UsernameSlug::normalize((string) ($input['slug'] ?? ''));
 
         Validator::make($input, [
             ...$this->profileRules(),
@@ -39,7 +35,7 @@ class CreateNewUser implements CreatesNewUsers
             'password'  => $input['password'],
             'is_active' => true,
             'role'      => UserRole::USER->value,
-            'locale'    => config('app.locale'),
+            'locale'    => app()->getLocale(),
         ]);
     }
 }

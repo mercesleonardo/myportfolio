@@ -3,29 +3,12 @@
 namespace App\Concerns;
 
 use App\Models\User;
+use App\Support\UsernameSlug;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Validation\Rule;
 
 trait ProfileValidationRules
 {
-    /**
-     * Words that must never be used as user slugs.
-     *
-     * @return array<int, string>
-     */
-    protected function reservedSlugs(): array
-    {
-        return [
-            'admin',
-            'api',
-            'dashboard',
-            'login',
-            'logout',
-            'register',
-            'settings',
-        ];
-    }
-
     /**
      * Get the validation rules used to validate user profiles.
      *
@@ -80,7 +63,7 @@ trait ProfileValidationRules
             'string',
             'max:255',
             'regex:/^[a-z]+$/',
-            Rule::notIn($this->reservedSlugs()),
+            Rule::notIn(UsernameSlug::reserved()),
             $userId === null
                 ? Rule::unique(User::class, 'slug')
                 : Rule::unique(User::class, 'slug')->ignore($userId),

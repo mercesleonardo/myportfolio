@@ -3,9 +3,9 @@
 namespace App\Http\Requests\Settings;
 
 use App\Concerns\ProfileValidationRules;
+use App\Support\UsernameSlug;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Str;
 
 class ProfileUpdateRequest extends FormRequest
 {
@@ -25,11 +25,7 @@ class ProfileUpdateRequest extends FormRequest
     {
         if ($this->has('slug')) {
             $this->merge([
-                'slug' => Str::of((string) $this->input('slug'))
-                    ->ascii()
-                    ->lower()
-                    ->replaceMatches('/[^a-z]/', '')
-                    ->toString(),
+                'slug' => UsernameSlug::normalize((string) $this->input('slug')),
             ]);
         }
     }

@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\UserRole;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
@@ -24,8 +25,16 @@ class UserFactory extends Factory
      */
     public function definition(): array
     {
+        $name = fake()->name();
+        $slug = Str::of((string) fake()->unique()->userName())
+            ->ascii()
+            ->lower()
+            ->replaceMatches('/[^a-z]/', '')
+            ->toString();
+
         return [
-            'name'                      => fake()->name(),
+            'name'                      => $name,
+            'slug'                      => $slug,
             'email'                     => fake()->unique()->safeEmail(),
             'email_verified_at'         => now(),
             'password'                  => static::$password ??= Hash::make('password'),
@@ -33,6 +42,10 @@ class UserFactory extends Factory
             'two_factor_secret'         => null,
             'two_factor_recovery_codes' => null,
             'two_factor_confirmed_at'   => null,
+            'is_active'                 => true,
+            'role'                      => UserRole::USER->value,
+            'google_id'                 => null,
+            'locale'                    => config('app.locale'),
         ];
     }
 

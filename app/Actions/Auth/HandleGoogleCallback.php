@@ -62,7 +62,7 @@ final class HandleGoogleCallback
             'email'     => $email,
             'password'  => str()->random(32),
             'is_active' => true,
-            'role'      => UserRole::USER->value,
+            'role'      => UserRole::USER,
             'google_id' => $googleId,
             'locale'    => app()->getLocale(),
         ]);

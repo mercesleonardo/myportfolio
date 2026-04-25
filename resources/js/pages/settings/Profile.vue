@@ -65,6 +65,23 @@ const user = computed(() => page.props.auth.user);
             </div>
 
             <div class="grid gap-2">
+                <Label for="slug">Username</Label>
+                <Input
+                    id="slug"
+                    class="mt-1 block w-full"
+                    name="slug"
+                    :default-value="String(user.slug ?? '')"
+                    required
+                    autocomplete="username"
+                    placeholder="leonardocarvalho"
+                />
+                <p class="text-sm text-muted-foreground">
+                    Only letters (a-z). No numbers or hyphens.
+                </p>
+                <InputError class="mt-2" :message="errors.slug" />
+            </div>
+
+            <div class="grid gap-2">
                 <Label for="email">Email address</Label>
                 <Input
                     id="email"

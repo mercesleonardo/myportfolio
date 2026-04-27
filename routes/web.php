@@ -16,3 +16,5 @@ Route::get('/auth/google/redirect', [GoogleController::class, 'redirect'])->name
 Route::get('/auth/google/callback', [GoogleController::class, 'callback'])->name('auth.google.callback');
 
 require __DIR__ . '/settings.php';
+
+require __DIR__ . '/admin.php';

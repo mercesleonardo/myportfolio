@@ -2,9 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use Carbon\CarbonImmutable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\{DB, Date};
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 
@@ -26,6 +28,8 @@ class AppServiceProvider extends ServiceProvider
         $this->configureDefaults();
 
         Model::preventLazyLoading(!app()->isProduction());
+
+        Gate::define('manage-users', fn (User $user): bool => $user->isAdmin());
     }
 
     /**

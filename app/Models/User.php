@@ -79,4 +79,9 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
     {
         return $this->isAdmin() || $this->isFinance();
     }
+
+    public function isAdminOrFinanceOrSupport(): bool
+    {
+        return $this->isAdmin() || $this->isFinance() || $this->isSupport();
+    }
 }

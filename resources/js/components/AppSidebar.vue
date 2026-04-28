@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Link, usePage } from '@inertiajs/vue3';
 import { computed } from 'vue';
-import { BookOpen, FolderGit2, LayoutGrid, Users } from 'lucide-vue-next';
+import { BookOpen, FolderGit2, LayoutGrid, User, Users } from 'lucide-vue-next';
 import AppLogo from '@/components/AppLogo.vue';
 import NavFooter from '@/components/NavFooter.vue';
 import NavMain from '@/components/NavMain.vue';
@@ -17,6 +17,7 @@ import {
 } from '@/components/ui/sidebar';
 import admin from '@/routes/admin';
 import { dashboard } from '@/routes';
+import { edit as professionalProfileEdit } from '@/routes/professional-profile';
 import type { NavItem } from '@/types';
 
 const page = usePage();
@@ -29,6 +30,11 @@ const mainNavItems = computed<NavItem[]>(() => {
             title: 'Dashboard',
             href: dashboard(),
             icon: LayoutGrid,
+        },
+        {
+            title: 'Professional profile',
+            href: professionalProfileEdit(),
+            icon: User,
         },
     ];
 

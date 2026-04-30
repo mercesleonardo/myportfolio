@@ -53,8 +53,12 @@ test('admin can create a user', function () {
         'slug' => 'admincreator',
     ]);
 
+    $token = 'test-csrf-token';
+
     $this->actingAs($admin)
+        ->withSession(['_token' => $token])
         ->post(route('admin.users.store'), [
+            '_token'                => $token,
             'name'                  => 'New User',
             'slug'                  => 'newuser',
             'email'                 => 'newuser@example.com',
@@ -62,13 +66,15 @@ test('admin can create a user', function () {
             'password_confirmation' => 'password',
             'is_active'             => true,
             'role'                  => UserRole::USER->value,
+            'is_published'          => true,
         ])
         ->assertRedirect(route('admin.users.index'));
 
     $this->assertDatabaseHas('users', [
-        'email' => 'newuser@example.com',
-        'slug'  => 'newuser',
-        'is_active' => 1,
+        'email'        => 'newuser@example.com',
+        'slug'         => 'newuser',
+        'is_active'    => 1,
+        'is_published' => 0,
     ]);
 });
 
@@ -78,8 +84,12 @@ test('admin can create an inactive user', function () {
         'slug' => 'admincreatorinactive',
     ]);
 
+    $token = 'test-csrf-token';
+
     $this->actingAs($admin)
+        ->withSession(['_token' => $token])
         ->post(route('admin.users.store'), [
+            '_token'                => $token,
             'name'                  => 'Inactive User',
             'slug'                  => 'inactiveuser',
             'email'                 => 'inactiveuser@example.com',
@@ -91,9 +101,10 @@ test('admin can create an inactive user', function () {
         ->assertRedirect(route('admin.users.index'));
 
     $this->assertDatabaseHas('users', [
-        'email'     => 'inactiveuser@example.com',
-        'slug'      => 'inactiveuser',
-        'is_active' => 0,
+        'email'        => 'inactiveuser@example.com',
+        'slug'         => 'inactiveuser',
+        'is_active'    => 0,
+        'is_published' => 0,
     ]);
 });
 
@@ -108,8 +119,12 @@ test('admin can update a user', function () {
         'slug' => 'targetuser',
     ]);
 
+    $token = 'test-csrf-token';
+
     $this->actingAs($admin)
+        ->withSession(['_token' => $token])
         ->patch(route('admin.users.update', $user), [
+            '_token'                => $token,
             'name'                  => 'Updated Name',
             'slug'                  => 'updateduser',
             'email'                 => $user->email,
@@ -139,8 +154,11 @@ test('admin can delete a user', function () {
         'slug' => 'deleteuser',
     ]);
 
+    $token = 'test-csrf-token';
+
     $this->actingAs($admin)
-        ->delete(route('admin.users.destroy', $user))
+        ->withSession(['_token' => $token])
+        ->delete(route('admin.users.destroy', $user), ['_token' => $token])
         ->assertRedirect(route('admin.users.index'));
 
     $this->assertSoftDeleted('users', [
@@ -161,8 +179,11 @@ test('admin can restore a user', function () {
 
     $user->delete();
 
+    $token = 'test-csrf-token';
+
     $this->actingAs($admin)
-        ->post(route('admin.users.restore', $user))
+        ->withSession(['_token' => $token])
+        ->post(route('admin.users.restore', $user), ['_token' => $token])
         ->assertRedirect(route('admin.users.edit', $user));
 
     expect(User::withTrashed()->find($user->id)?->deleted_at)->toBeNull();

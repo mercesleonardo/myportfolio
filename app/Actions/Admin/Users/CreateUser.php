@@ -23,6 +23,7 @@ final class CreateUser
         ]);
 
         $data['locale'] ??= app()->getLocale();
+        $data['is_published'] = false;
 
         return User::create($data);
     }

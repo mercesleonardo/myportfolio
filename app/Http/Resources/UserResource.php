@@ -22,6 +22,7 @@ class UserResource extends JsonResource
             'slug'              => $this->slug,
             'email'             => $this->email,
             'is_active'         => (bool) $this->is_active,
+            'is_published'      => (bool) $this->is_published,
             'role'              => $this->role?->value ?? null,
             'role_label'        => $this->role?->label() ?? null,
             'google_id'         => $this->google_id,

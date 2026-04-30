@@ -25,6 +25,7 @@ return new class () extends Migration {
             $table->string('role')->default(UserRole::USER->value)->index();
             $table->string('google_id')->nullable()->unique();
             $table->string('locale', 12)->nullable();
+            $table->boolean('is_published')->default(false);
             $table->rememberToken();
             $table->softDeletes();
             $table->timestamps();

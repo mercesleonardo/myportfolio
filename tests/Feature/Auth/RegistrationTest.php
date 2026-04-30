@@ -13,7 +13,10 @@ test('registration screen can be rendered', function () {
 });
 
 test('new users can register', function () {
-    $response = $this->post(route('register.store'), [
+    $token = 'test-csrf-token';
+
+    $response = $this->withSession(['_token' => $token])->post(route('register.store'), [
+        '_token'                => $token,
         'name'                  => 'Test User',
         'slug'                  => 'testuser',
         'email'                 => 'test@example.com',
@@ -23,4 +26,7 @@ test('new users can register', function () {
 
     $this->assertAuthenticated();
     $response->assertRedirect(route('dashboard', absolute: false));
+
+    $user = \App\Models\User::query()->where('email', 'test@example.com')->firstOrFail();
+    expect($user->is_published)->toBeFalse();
 });

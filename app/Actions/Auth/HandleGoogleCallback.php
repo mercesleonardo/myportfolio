@@ -57,14 +57,15 @@ final class HandleGoogleCallback
         }
 
         $user = User::create([
-            'name'      => $name,
-            'slug'      => $slug,
-            'email'     => $email,
-            'password'  => str()->random(32),
-            'is_active' => true,
-            'role'      => UserRole::USER,
-            'google_id' => $googleId,
-            'locale'    => app()->getLocale(),
+            'name'         => $name,
+            'slug'         => $slug,
+            'email'        => $email,
+            'password'     => str()->random(32),
+            'is_active'    => true,
+            'is_published' => false,
+            'role'         => UserRole::USER,
+            'google_id'    => $googleId,
+            'locale'       => app()->getLocale(),
         ]);
 
         $user->forceFill(['email_verified_at' => now()])->save();

@@ -14,7 +14,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 
-#[Fillable(['name', 'slug', 'email', 'password', 'is_active', 'role', 'google_id', 'locale'])]
+#[Fillable(['name', 'slug', 'email', 'password', 'is_active', 'role', 'google_id', 'locale', 'is_published'])]
 #[Hidden(['password', 'two_factor_secret', 'two_factor_recovery_codes', 'remember_token'])]
 class User extends Authenticatable implements HasLocalePreference, MustVerifyEmail
 {
@@ -37,6 +37,7 @@ class User extends Authenticatable implements HasLocalePreference, MustVerifyEma
             'two_factor_confirmed_at' => 'datetime',
             'deleted_at'              => 'datetime',
             'is_active'               => 'boolean',
+            'is_published'            => 'boolean',
             'role'                    => UserRole::class,
         ];
     }

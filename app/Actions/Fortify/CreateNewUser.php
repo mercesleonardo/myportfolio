@@ -29,13 +29,14 @@ class CreateNewUser implements CreatesNewUsers
         ])->validate();
 
         return User::create([
-            'name'      => $input['name'],
-            'slug'      => $input['slug'],
-            'email'     => $input['email'],
-            'password'  => $input['password'],
-            'is_active' => true,
-            'role'      => UserRole::USER,
-            'locale'    => app()->getLocale(),
+            'name'         => $input['name'],
+            'slug'         => $input['slug'],
+            'email'        => $input['email'],
+            'password'     => $input['password'],
+            'is_active'    => true,
+            'is_published' => false,
+            'role'         => UserRole::USER,
+            'locale'       => app()->getLocale(),
         ]);
     }
 }
